@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile - InterviewAI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c6c6cd; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #76777d; 
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1b1b1d",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e4e2e4",
+                      "surface-container": "#f0edef",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-surface-variant": "#45464d",
+                      "surface-dim": "#dcd9db",
+                      "background": "#fcf8fa",
+                      "surface": "#fcf8fa",
+                      "primary-fixed": "#dae2fd",
+                      "on-tertiary-fixed-variant": "#574425",
+                      "secondary-fixed": "#d3e4fe",
+                      "on-secondary-container": "#54647a",
+                      "tertiary-fixed-dim": "#dec29a",
+                      "on-tertiary-container": "#98805d",
+                      "surface-tint": "#565e74",
+                      "inverse-surface": "#303032",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "on-background": "#1b1b1d",
+                      "primary": "#000000",
+                      "tertiary-container": "#271901",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "tertiary-fixed": "#fcdeb5",
+                      "outline-variant": "#c6c6cd",
+                      "primary-fixed-dim": "#bec6e0",
+                      "secondary-container": "#d0e1fb",
+                      "secondary": "#505f76",
+                      "surface-container-low": "#f6f3f5",
+                      "inverse-primary": "#bec6e0",
+                      "on-tertiary-fixed": "#271901",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#131b2e",
+                      "on-secondary-fixed": "#0b1c30",
+                      "inverse-on-surface": "#f3f0f2",
+                      "on-primary-container": "#7c839b",
+                      "primary-container": "#131b2e",
+                      "tertiary": "#000000",
+                      "outline": "#76777d",
+                      "surface-container-high": "#eae7e9",
+                      "surface-bright": "#fcf8fa",
+                      "on-secondary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#e4e2e4",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "max-width": "1440px",
+                      "gutter": "20px",
+                      "margin": "24px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "code-sm": ["jetbrainsMono"],
+                      "body-lg": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "code-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-md": ["18px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen overflow-hidden flex">
+    
+    <!-- SideNavBar -->
+    <nav class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col p-margin gap-md z-50">
+        <div class="flex items-center gap-sm mb-lg">
+            <div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center text-on-primary-container">
+                <span class="material-symbols-outlined" data-weight="fill">bubble_chart</span>
+            </div>
+            <div>
+                <h1 class="font-headline-lg text-headline-lg font-bold text-primary">InterviewAI</h1>
+                <p class="font-label-md text-label-md text-on-surface-variant">Enterprise Modern</p>
+            </div>
+        </div>
+        <div class="flex-1 flex flex-col gap-sm" id="sidebar-nav">
+            <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="code.html" data-nav="Candidates">
+                <span class="material-symbols-outlined" data-icon="group">group</span>
+                Candidates
+            </a>
+            <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="jobs.html" data-nav="Jobs">
+                <span class="material-symbols-outlined" data-icon="work">work</span>
+                Jobs
+            </a>
+            <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="interviews.html" data-nav="Interviews">
+                <span class="material-symbols-outlined" data-icon="video_camera_front">video_camera_front</span>
+                Interviews
+            </a>
+            <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="reports.html" data-nav="Reports">
+                <span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reports
+            </a>
+        </div>
+        
+        <div class="flex flex-col gap-sm border-t border-outline-variant pt-md" id="sidebar-footer">
+
+            <button id="btn-logout-sidebar" class="flex items-center gap-md p-sm text-on-surface-variant hover:text-error hover:bg-error-container/20 transition-colors duration-200 rounded-lg w-full text-left">
+                <span class="material-symbols-outlined">logout</span>
+                Logout
+            </button>
+            <div class="flex items-center gap-sm mt-2 p-sm rounded-lg bg-surface-container-lowest border border-outline-variant shadow-sm overflow-hidden">
+                <div id="sidebar-user-avatar" class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shrink-0">U</div>
+                <div class="flex-1 overflow-hidden">
+                    <p id="sidebar-user-name" class="font-semibold text-sm text-on-surface truncate">User Name</p>
+                    <p id="sidebar-user-role" class="text-xs text-on-surface-variant truncate">user@example.com</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col ml-[260px] h-screen overflow-hidden">
+        
+        <!-- TopNavBar -->
+        <header class="fixed top-0 right-0 w-[calc(100%-260px)] z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant h-16 px-lg flex justify-end items-center transition-all duration-150 ease-in-out">
+
+            <div class="flex items-center gap-md">
+                <button class="text-on-surface-variant hover:text-primary transition-colors duration-150">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <div id="btn-profile" class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary ml-sm cursor-pointer shadow-sm">
+                    <div class="w-full h-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm">U</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Canvas -->
+        <main class="flex-1 overflow-y-auto pt-[80px] p-xl bg-background">
+            <div class="max-w-[1440px] mx-auto flex flex-col gap-xl">
+                
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row gap-lg md:items-end justify-between bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant shadow-sm relative overflow-hidden">
+                    <!-- Decorative background element -->
+                    <div class="absolute right-0 top-0 w-64 h-64 bg-gradient-to-bl from-primary-fixed to-transparent opacity-30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    
+                    <div class="flex items-center gap-lg relative z-10">
+                        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-surface shadow-md">
+                            <div id="large-avatar-text" class="w-full h-full bg-primary flex items-center justify-center text-on-primary font-bold text-4xl">U</div>
+                        </div>
+                        <div>
+                            <h2 id="display-name" class="font-headline-xl text-headline-xl text-on-surface mb-xs font-bold tracking-tight">John Doe</h2>
+                            <p id="display-email" class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">mail</span>
+                                john.doe@example.com
+                            </p>
+                            <span id="display-role" class="inline-flex mt-2 items-center px-3 py-1 rounded-full font-label-md text-xs bg-secondary-container text-on-secondary-container font-semibold uppercase tracking-wider shadow-sm">
+                                Candidate
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                    <div class="bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center gap-md group">
+                        <div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-2xl">video_camera_front</span>
+                        </div>
+                        <div>
+                            <p class="font-label-md text-on-surface-variant uppercase tracking-wider text-[10px]">Total Interviews</p>
+                            <h3 id="stat-total" class="font-headline-lg text-headline-lg font-bold text-on-surface">0</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center gap-md group">
+                        <div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-2xl">task_alt</span>
+                        </div>
+                        <div>
+                            <p class="font-label-md text-on-surface-variant uppercase tracking-wider text-[10px]">Completed</p>
+                            <h3 id="stat-completed" class="font-headline-lg text-headline-lg font-bold text-on-surface">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center gap-md group">
+                        <div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-2xl">star</span>
+                        </div>
+                        <div>
+                            <p class="font-label-md text-on-surface-variant uppercase tracking-wider text-[10px]">Avg Score</p>
+                            <h3 id="stat-score" class="font-headline-lg text-headline-lg font-bold text-on-surface">N/A</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+                    <!-- Left Column: Forms -->
+                    <div class="lg:col-span-5 flex flex-col gap-lg">
+                        
+                        <!-- Personal Details Form -->
+                        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden">
+                            <div class="p-lg border-b border-outline-variant bg-surface-container-low/50">
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">person_edit</span>
+                                    Personal Details
+                                </h3>
+                                <p class="text-xs text-on-surface-variant mt-1">Update your basic profile information.</p>
+                            </div>
+                            <form id="profile-form" class="p-lg flex flex-col gap-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block font-label-md text-on-surface-variant mb-1">First Name</label>
+                                        <input type="text" id="input-first-name" class="w-full rounded-lg border-outline-variant shadow-sm focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 text-sm transition-all duration-200 bg-surface focus:bg-surface-container-lowest">
+                                    </div>
+                                    <div>
+                                        <label class="block font-label-md text-on-surface-variant mb-1">Last Name</label>
+                                        <input type="text" id="input-last-name" class="w-full rounded-lg border-outline-variant shadow-sm focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 text-sm transition-all duration-200 bg-surface focus:bg-surface-container-lowest">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block font-label-md text-on-surface-variant mb-1">Phone Number</label>
+                                    <input type="tel" id="input-phone" class="w-full rounded-lg border-outline-variant shadow-sm focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 text-sm transition-all duration-200 bg-surface focus:bg-surface-container-lowest">
+                                </div>
+                                <div class="flex justify-end mt-2">
+                                    <button type="submit" class="px-5 py-2 text-sm font-semibold bg-primary text-on-primary rounded-lg shadow-sm hover:bg-primary/90 hover:shadow transition-all duration-200 flex items-center gap-2 active:scale-95">
+                                        <span>Save Changes</span>
+                                        <span class="material-symbols-outlined text-[16px] hidden animate-spin" id="profile-loading">sync</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Resume Management Form -->
+                        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden mt-4">
+                            <div class="p-lg border-b border-outline-variant bg-surface-container-low/50">
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">description</span>
+                                    Resume Management
+                                </h3>
+                                <p class="text-xs text-on-surface-variant mt-1">Upload or update your resume for AI interviews.</p>
+                            </div>
+                            <div class="p-lg flex flex-col gap-4">
+                                <div id="resume-status" class="text-sm text-on-surface-variant mb-2 font-medium">
+                                    Loading resume status...
+                                </div>
+                                <div class="border-2 border-dashed border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center gap-3 bg-surface-container-lowest hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer" id="resume-drop-zone">
+                                    <span class="material-symbols-outlined text-3xl text-primary opacity-80">cloud_upload</span>
+                                    <div class="text-center">
+                                        <p class="font-bold text-on-surface text-sm">Click to browse or drag and drop</p>
+                                        <p class="text-xs text-on-surface-variant mt-1">PDF, DOCX, TXT (Max 5MB)</p>
+                                    </div>
+                                    <input type="file" id="resume-input" class="hidden" accept=".pdf,.docx,.txt">
+                                </div>
+                                <div id="upload-error" class="hidden text-error text-sm font-semibold text-center"></div>
+                                <div id="upload-progress" class="hidden text-primary text-sm font-semibold flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined animate-spin text-[16px]">sync</span> Uploading and analyzing...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Change Password Form -->
+                        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden">
+                            <div class="p-lg border-b border-outline-variant bg-surface-container-low/50">
+                                <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">lock</span>
+                                    Security
+                                </h3>
+                                <p class="text-xs text-on-surface-variant mt-1">Ensure your account is using a long, random password.</p>
+                            </div>
+                            <form id="password-form" class="p-lg flex flex-col gap-4">
+                                <div>
+                                    <label class="block font-label-md text-on-surface-variant mb-1">Current Password</label>
+                                    <input type="password" id="input-current-password" required class="w-full rounded-lg border-outline-variant shadow-sm focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 text-sm transition-all duration-200 bg-surface focus:bg-surface-container-lowest">
+                                </div>
+                                <div>
+                                    <label class="block font-label-md text-on-surface-variant mb-1">New Password</label>
+                                    <input type="password" id="input-new-password" required class="w-full rounded-lg border-outline-variant shadow-sm focus:border-primary focus:ring-1 focus:ring-primary px-3 py-2 text-sm transition-all duration-200 bg-surface focus:bg-surface-container-lowest">
+                                </div>
+                                <div class="flex justify-end mt-2">
+                                    <button type="submit" class="px-5 py-2 text-sm font-semibold border border-outline-variant text-on-surface rounded-lg shadow-sm hover:bg-surface-container-high hover:border-primary transition-all duration-200 flex items-center gap-2 active:scale-95">
+                                        <span>Update Password</span>
+                                        <span class="material-symbols-outlined text-[16px] hidden animate-spin" id="password-loading">sync</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Interviews -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden h-full flex flex-col">
+                            <div class="p-lg border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+                                <div>
+                                    <h3 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary">history</span>
+                                        Previous Interviews
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-auto p-0">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-surface sticky top-0 z-10 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider shadow-sm">
+                                        <tr>
+                                            <th class="p-4 font-semibold border-b border-surface-variant">Role</th>
+                                            <th class="p-4 font-semibold border-b border-surface-variant">Status</th>
+                                            <th class="p-4 font-semibold border-b border-surface-variant">Date</th>
+                                            <th class="p-4 font-semibold border-b border-surface-variant text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="interviews-list" class="font-body-md text-body-md text-on-surface divide-y divide-surface-variant">
+                                        <!-- Populated via JS -->
+                                        <tr>
+                                            <td colspan="4" class="p-8 text-center text-on-surface-variant">Loading interviews...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-lg right-lg z-50 flex flex-col gap-2"></div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        Auth.requireAuth();
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            
+            toast.className = `transform translate-y-full opacity-0 transition-all duration-300 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border ${isError ? 'bg-error-container border-error/20 text-on-error-container' : 'bg-surface-container-lowest border-outline-variant text-on-surface'}`;
+            
+            toast.innerHTML = `
+                <span class="material-symbols-outlined ${isError ? 'text-error' : 'text-primary'}">${isError ? 'error' : 'check_circle'}</span>
+                <p class="text-sm font-medium">${message}</p>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full', 'opacity-0');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me');
+                if (res.ok) {
+                    const data = await res.json();
+                    const fullName = `${data.first_name || ''} ${data.last_name || ''}`.trim() || 'Candidate User';
+                    
+                    // Update header
+                    document.getElementById('display-name').textContent = fullName;
+                    document.getElementById('display-email').innerHTML = `<span class="material-symbols-outlined text-[18px]">mail</span> ${data.email}`;
+                    document.getElementById('display-role').textContent = data.role;
+                    
+                    // Update sidebar
+                    document.getElementById('sidebar-user-name').textContent = fullName;
+                    document.getElementById('sidebar-user-role').textContent = data.email;
+                    document.getElementById('sidebar-user-avatar').textContent = fullName.charAt(0).toUpperCase();
+                    
+                    const largeAvatar = document.getElementById('large-avatar-text');
+                    if(largeAvatar) largeAvatar.textContent = fullName.charAt(0).toUpperCase();
+
+                    // Update form inputs
+                    if (data.first_name) document.getElementById('input-first-name').value = data.first_name;
+                    if (data.last_name) document.getElementById('input-last-name').value = data.last_name;
+                    if (data.phone) document.getElementById('input-phone').value = data.phone;
+                }
+            } catch (err) {
+                console.error('Error loading profile:', err);
+                showToast('Failed to load profile details', 'error');
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/stats');
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('stat-total').textContent = data.total_interviews || '0';
+                    document.getElementById('stat-completed').textContent = data.completed_interviews || '0';
+                    // We don't have a real score yet, so keep N/A or set to 0 if provided
+                    document.getElementById('stat-score').textContent = data.avg_score > 0 ? data.avg_score : 'N/A';
+                }
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        async function loadInterviews() {
+            try {
+                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/interviews');
+                const tbody = document.getElementById('interviews-list');
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    tbody.innerHTML = '';
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-on-surface-variant text-sm">No interviews found.</td></tr>`;
+                        return;
+                    }
+                    
+                    data.forEach(interview => {
+                        const dateObj = new Date(interview.created_at);
+                        const dateStr = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                        
+                        let statusColor = 'bg-surface-container-high text-on-surface-variant';
+                        if (interview.status === 'COMPLETED') statusColor = 'bg-secondary-container text-on-secondary-container';
+                        if (interview.status === 'IN_PROGRESS') statusColor = 'bg-primary-fixed text-on-primary-fixed';
+
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-surface-container-lowest transition-colors duration-150 group">
+                                <td class="p-4">
+                                    <p class="font-semibold text-sm text-on-surface">${interview.job_title}</p>
+                                    <p class="text-xs text-on-surface-variant">${interview.company || 'InterviewAI'}</p>
+                                </td>
+                                <td class="p-4">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded font-label-md text-[10px] ${statusColor}">
+                                        ${interview.status.replace('_', ' ')}
+                                    </span>
+                                </td>
+                                <td class="p-4 text-sm text-on-surface-variant">${dateStr}</td>
+                                <td class="p-4 text-right">
+                                    <a href="interview.html" class="inline-flex items-center justify-center p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-full transition-colors opacity-0 group-hover:opacity-100" title="View details">
+                                        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (err) {
+                console.error('Error loading interviews:', err);
+                document.getElementById('interviews-list').innerHTML = `<tr><td colspan="4" class="p-8 text-center text-error text-sm">Failed to load interviews.</td></tr>`;
+            }
+        }
+
+        async function loadResumeStatus() {
+            try {
+                const res = await Auth.fetchAuth(`${API_BASE}/resumes`);
+                const statusDiv = document.getElementById('resume-status');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        const latest = data[0];
+                        const dateStr = new Date(latest.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                        
+                        // Show skills if available
+                        const skills = (latest.parsed_data && latest.parsed_data.Skills) ? latest.parsed_data.Skills.slice(0, 5).join(', ') + '...' : 'Parsing...';
+                        
+                        statusDiv.innerHTML = `
+                            <p><span class="text-primary font-bold">Current Resume:</span> ${latest.file_name} <span class="text-xs text-on-surface-variant">(${dateStr})</span></p>
+                            <p class="text-xs mt-1 text-on-surface-variant"><span class="font-semibold">Detected Skills:</span> ${skills}</p>
+                        `;
+                    } else {
+                        statusDiv.innerHTML = `No resume on file. Upload one below to get tailored interviews.`;
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading resume status:', err);
+                document.getElementById('resume-status').innerHTML = 'Failed to load resume status.';
+            }
+        }
+
+        function setupInteractivity() {
+            // Profile Form
+            document.getElementById('profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const loader = document.getElementById('profile-loading');
+                loader.classList.remove('hidden');
+                
+                const payload = {
+                    first_name: document.getElementById('input-first-name').value,
+                    last_name: document.getElementById('input-last-name').value,
+                    phone: document.getElementById('input-phone').value
+                };
+
+                try {
+                    const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (res.ok) {
+                        showToast('Profile updated successfully');
+                        // Refresh header display
+                        loadProfile();
+                    } else {
+                        const err = await res.json();
+                        showToast(err.detail || 'Failed to update profile', 'error');
+                    }
+                } catch (err) {
+                    showToast('An error occurred', 'error');
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            });
+
+            // Password Form
+            document.getElementById('password-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const loader = document.getElementById('password-loading');
+                const currPass = document.getElementById('input-current-password').value;
+                const newPass = document.getElementById('input-new-password').value;
+                
+                if (currPass === newPass) {
+                    showToast('New password must be different', 'error');
+                    return;
+                }
+
+                loader.classList.remove('hidden');
+                
+                try {
+                    const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/password', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            current_password: currPass,
+                            new_password: newPass
+                        })
+                    });
+                    
+                    if (res.ok) {
+                        showToast('Password updated successfully');
+                        e.target.reset();
+                    } else {
+                        const err = await res.json();
+                        showToast(err.detail || 'Failed to update password', 'error');
+                    }
+                } catch (err) {
+                    showToast('An error occurred', 'error');
+                } finally {
+                    loader.classList.add('hidden');
+                }
+            });
+
+            // Resume Upload Logic
+            const dropZone = document.getElementById('resume-drop-zone');
+            const resumeInput = document.getElementById('resume-input');
+            const uploadError = document.getElementById('upload-error');
+            const uploadProgress = document.getElementById('upload-progress');
+
+            dropZone.addEventListener('click', () => resumeInput.click());
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-primary', 'bg-primary/10');
+            });
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('border-primary', 'bg-primary/10');
+            });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary', 'bg-primary/10');
+                if(e.dataTransfer.files.length) {
+                    handleResumeUpload(e.dataTransfer.files[0]);
+                }
+            });
+            resumeInput.addEventListener('change', (e) => {
+                if(e.target.files.length) {
+                    handleResumeUpload(e.target.files[0]);
+                }
+            });
+
+            async function handleResumeUpload(file) {
+                uploadError.classList.add('hidden');
+                uploadProgress.classList.remove('hidden');
+                
+                const allowed = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+                if (!allowed.includes(file.type) && !file.name.endsWith('.pdf') && !file.name.endsWith('.docx') && !file.name.endsWith('.txt')) {
+                    uploadError.innerText = "Only PDF, DOCX, or TXT files are allowed.";
+                    uploadError.classList.remove('hidden');
+                    uploadProgress.classList.add('hidden');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    const res = await Auth.fetchAuth(`${API_BASE}/resumes`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        showToast('Resume uploaded! Parsing in background...');
+                        // Poll for status update every 2 seconds until parsed (max 15 attempts)
+                        let attempts = 0;
+                        const pollInterval = setInterval(async () => {
+                            attempts++;
+                            try {
+                                const checkRes = await Auth.fetchAuth(`${API_BASE}/resumes`);
+                                if (checkRes.ok) {
+                                    const resumes = await checkRes.json();
+                                    if (resumes.length > 0 && resumes[0].parsed_data && resumes[0].parsed_data.Skills) {
+                                        clearInterval(pollInterval);
+                                        await loadResumeStatus();
+                                        uploadProgress.classList.add('hidden');
+                                        showToast('Resume parsing complete!');
+                                        return;
+                                    }
+                                }
+                            } catch (e) {
+                                console.error('Error polling resume status:', e);
+                            }
+
+                            if (attempts >= 15) {
+                                clearInterval(pollInterval);
+                                uploadProgress.classList.add('hidden');
+                                showToast('Parsing is taking longer than expected. Please refresh later.', 'error');
+                                await loadResumeStatus();
+                            }
+                        }, 2000);
+                        
+                        // Update status to show it's currently parsing
+                        await loadResumeStatus();
+                    } else {
+                        const err = await res.json();
+                        throw new Error(err.detail || "Upload failed");
+                    }
+                } catch (e) {
+                    uploadError.innerText = e.message;
+                    uploadError.classList.remove('hidden');
+                    uploadProgress.classList.add('hidden');
+                }
+            }
+
+            // Logout
+            document.getElementById('btn-logout-sidebar').addEventListener('click', () => {
+                Auth.logout();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProfile();
+            loadStats();
+            loadInterviews();
+            loadResumeStatus();
+            setupInteractivity();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login - InterviewAI</title>
+    <!-- Prevent caching of stale HTML/JS -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+        /* Shared Tailwind Config and Styles */
+        :root {
+            --primary: #000000;
+            --on-primary: #ffffff;
+            --background: #fcf8fa;
+            --surface: #ffffff;
+            --on-surface: #1b1b1d;
+            --outline-variant: #c6c6cd;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--background); color: var(--on-surface); }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid var(--outline-variant); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Decorative background blobs -->
+    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#dae2fd] rounded-full blur-[100px] opacity-60 -z-10"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#ffdad6] rounded-full blur-[100px] opacity-60 -z-10"></div>
+
+    <div class="glass-panel w-full max-w-md rounded-2xl p-8 shadow-xl">
+        <div class="flex items-center justify-center gap-2 mb-8">
+            <span class="material-symbols-outlined text-[32px]">psychiatry</span>
+            <h1 class="text-3xl font-black tracking-tight">InterviewAI</h1>
+        </div>
+
+        <h2 class="text-xl font-bold mb-6 text-center" id="form-title">Sign In</h2>
+        
+        <form id="login-form" class="flex flex-col gap-4">
+            
+            <div id="register-fields" class="hidden flex-col gap-4">
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-semibold mb-1">First Name</label>
+                        <input type="text" id="first-name" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black px-4 py-2" placeholder="Jane">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-semibold mb-1">Last Name</label>
+                        <input type="text" id="last-name" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black px-4 py-2" placeholder="Doe">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-1">Phone Number</label>
+                    <input type="tel" id="phone" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black px-4 py-2" placeholder="+1 (555) 000-0000">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-1">Email</label>
+                <input type="email" id="email" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black px-4 py-2" required placeholder="jane.doe@example.com">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold mb-1">Password</label>
+                <input type="password" id="password" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-black focus:ring-black px-4 py-2" required placeholder="••••••••">
+            </div>
+
+            <div id="error-msg" class="text-red-600 text-sm hidden bg-red-50 p-2 rounded"></div>
+            <div id="success-msg" class="text-green-700 text-sm hidden bg-green-50 p-2 rounded border border-green-200"></div>
+
+            <button type="submit" class="w-full bg-black text-white font-semibold rounded-lg px-4 py-3 mt-4 hover:bg-gray-800 transition-colors shadow-md flex items-center justify-center gap-2">
+                <span id="btn-text">Sign In</span>
+                <span class="material-symbols-outlined text-sm hidden" id="loading-icon">sync</span>
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm">
+            <button id="toggle-mode" class="text-gray-600 hover:text-black font-semibold underline decoration-2 underline-offset-2">
+                Need an account? Register here.
+            </button>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        let isLogin = true;
+        const form = document.getElementById('login-form');
+        const formTitle = document.getElementById('form-title');
+        const toggleBtn = document.getElementById('toggle-mode');
+        const btnText = document.getElementById('btn-text');
+        const errorMsg = document.getElementById('error-msg');
+        const successMsg = document.getElementById('success-msg');
+        const loadingIcon = document.getElementById('loading-icon');
+        const registerFields = document.getElementById('register-fields');
+
+        // Check if already authenticated
+        if (Auth.isAuthenticated()) {
+            window.location.href = 'code.html';
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            formTitle.innerText = isLogin ? "Sign In" : "Create Account";
+            btnText.innerText = isLogin ? "Sign In" : "Register";
+            toggleBtn.innerText = isLogin ? "Need an account? Register here." : "Already have an account? Sign in.";
+            errorMsg.classList.add('hidden');
+            successMsg.classList.add('hidden');
+            
+            if (isLogin) {
+                registerFields.classList.add('hidden');
+                registerFields.classList.remove('flex');
+                document.getElementById('first-name').removeAttribute('required');
+                document.getElementById('last-name').removeAttribute('required');
+            } else {
+                registerFields.classList.remove('hidden');
+                registerFields.classList.add('flex');
+                document.getElementById('first-name').setAttribute('required', 'true');
+                document.getElementById('last-name').setAttribute('required', 'true');
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const phone = document.getElementById('phone').value;
+            
+            errorMsg.classList.add('hidden');
+            successMsg.classList.add('hidden');
+            loadingIcon.classList.remove('hidden');
+            loadingIcon.classList.add('animate-spin');
+            
+            try {
+                if (isLogin) {
+                    // Login
+                    const formData = new URLSearchParams();
+                    formData.append('username', email);
+                    formData.append('password', password);
+                    
+                    const res = await fetch(`${API_BASE}/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: formData
+                    });
+                    
+                    if (!res.ok) throw new Error("Invalid credentials");
+                    const data = await res.json();
+                    Auth.setToken(data.access_token);
+                    window.location.href = 'code.html';
+                    
+                } else {
+                    // Register
+                    const res = await fetch(`${API_BASE}/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email,
+                            password,
+                            first_name: firstName,
+                            last_name: lastName,
+                            phone: phone || null
+                        })
+                    });
+                    
+                    if (!res.ok) throw new Error("Registration failed (email may exist)");
+                    
+                    // Show success, switch to login mode
+                    successMsg.innerText = "Successfully registered! Please sign in.";
+                    successMsg.classList.remove('hidden');
+                    
+                    // Reset form and switch back to Login mode
+                    form.reset();
+                    isLogin = true;
+                    formTitle.innerText = "Sign In";
+                    btnText.innerText = "Sign In";
+                    toggleBtn.innerText = "Need an account? Register here.";
+                    registerFields.classList.add('hidden');
+                    registerFields.classList.remove('flex');
+                    document.getElementById('first-name').removeAttribute('required');
+                    document.getElementById('last-name').removeAttribute('required');
+                }
+            } catch (err) {
+                errorMsg.innerText = err.message;
+                errorMsg.classList.remove('hidden');
+            } finally {
+                loadingIcon.classList.add('hidden');
+                loadingIcon.classList.remove('animate-spin');
+            }
+        });
+    </script>
+</body>
+</html>

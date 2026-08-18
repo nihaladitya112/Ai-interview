@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Interview - InterviewAI</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#1b1b1d",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e4e2e4",
+                        "surface-container": "#f0edef",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-surface-variant": "#45464d",
+                        "surface-dim": "#dcd9db",
+                        "background": "#fcf8fa",
+                        "surface": "#fcf8fa",
+                        "primary-fixed": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-secondary-container": "#54647a",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "on-tertiary-container": "#98805d",
+                        "surface-tint": "#565e74",
+                        "inverse-surface": "#303032",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "on-background": "#1b1b1d",
+                        "primary": "#000000",
+                        "tertiary-container": "#271901",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "tertiary-fixed": "#fcdeb5",
+                        "outline-variant": "#c6c6cd",
+                        "primary-fixed-dim": "#bec6e0",
+                        "secondary-container": "#d0e1fb",
+                        "secondary": "#505f76",
+                        "surface-container-low": "#f6f3f5",
+                        "inverse-primary": "#bec6e0",
+                        "on-tertiary-fixed": "#271901",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#131b2e",
+                        "on-secondary-fixed": "#0b1c30",
+                        "inverse-on-surface": "#f3f0f2",
+                        "on-primary-container": "#7c839b",
+                        "primary-container": "#131b2e",
+                        "tertiary": "#000000",
+                        "outline": "#76777d",
+                        "surface-container-high": "#eae7e9",
+                        "surface-bright": "#fcf8fa",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#e4e2e4",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "max-width": "1440px",
+                        "gutter": "20px",
+                        "margin": "24px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-xl": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["18px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Custom scrollbar for text area to match theme */
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background-color: var(--tw-colors-outline-variant);
+            border-radius: 20px;
+        }
+        /* Simple animation for AI thinking indicator */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.1; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+        .ai-pulse-dot::before {
+            content: '';
+            position: absolute;
+            left: -4px; top: -4px; right: -4px; bottom: -4px;
+            border-radius: 50%;
+            background-color: currentColor;
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            z-index: -1;
+        }
+        /* Waveform animation */
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .animate-wave-1 { animation: wave 1s ease-in-out infinite; }
+        .animate-wave-2 { animation: wave 1.2s ease-in-out infinite 0.2s; }
+        .animate-wave-3 { animation: wave 0.9s ease-in-out infinite 0.4s; }
+        .animate-wave-4 { animation: wave 1.1s ease-in-out infinite 0.1s; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- Focused Top Header (Overrides standard nav) -->
+<header class="bg-surface border-b border-outline-variant h-16 flex items-center justify-between px-lg z-40 sticky top-0 shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+<span class="font-headline-md text-headline-md font-black text-primary tracking-tight">InterviewAI</span>
+</div>
+<div class="flex items-center gap-md">
+<div id="timer-container" class="hidden md:flex items-center gap-xs text-on-surface-variant font-code-sm text-code-sm bg-surface-container-low px-3 py-1 rounded-full border border-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+<span id="interview-timer">30:00</span>
+</div>
+<button id="btn-exit" class="text-error flex items-center gap-xs hover:bg-error-container px-3 py-1.5 rounded-lg transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                Exit Interview
+            </button>
+</div>
+</header>
+<!-- Main Layout Grid -->
+<div class="flex-1 flex flex-col md:flex-row w-full max-w-max-width mx-auto px-margin py-xl gap-xl lg:gap-[48px]">
+<!-- Sidebar: Progress Stepper -->
+<aside class="w-full md:w-[260px] lg:w-[300px] flex-shrink-0">
+<div class="bg-surface border border-outline-variant rounded-xl p-lg shadow-sm sticky top-[100px]">
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-lg uppercase tracking-wider">Session Progress</h3>
+<div class="relative flex flex-col gap-8" id="stepper-container">
+<!-- Vertical Track Line -->
+<div class="absolute left-[11px] top-3 bottom-4 w-[2px] bg-surface-variant z-0"></div>
+
+<!-- Step 1: System Check & Intro -->
+<div id="step-intro" class="relative z-10 flex gap-md items-start group">
+    <div class="icon-container w-6 h-6 rounded-full bg-primary flex items-center justify-center mt-0.5 shadow-sm">
+        <span class="material-symbols-outlined text-[14px] text-on-primary">check</span>
+    </div>
+    <div>
+        <p class="title font-body-md text-body-md text-on-surface font-semibold">System Check &amp; Intro</p>
+        <p class="status font-code-sm text-code-sm text-outline mt-1">Completed</p>
+    </div>
+</div>
+
+<!-- Step 2: Technical -->
+<div id="step-technical" class="relative z-10 flex gap-md items-start">
+    <div class="icon-container w-6 h-6 rounded-full border-[3px] border-primary bg-surface flex items-center justify-center mt-0.5 shadow-sm relative">
+        <div class="pulse-dot w-2 h-2 rounded-full bg-primary relative ai-pulse-dot"></div>
+    </div>
+    <div>
+        <p class="title font-body-md text-body-md text-primary font-bold">Technical</p>
+        <p class="status font-code-sm text-code-sm text-primary mt-1 flex items-center gap-1">
+            <span class="material-symbols-outlined text-[12px] animate-spin">sync</span>
+            In Progress
+        </p>
+    </div>
+</div>
+
+<!-- Step 3: Behavioral -->
+<div id="step-behavioral" class="relative z-10 flex gap-md items-start opacity-60">
+    <div class="icon-container w-6 h-6 rounded-full bg-surface border-2 border-outline-variant flex items-center justify-center mt-0.5"></div>
+    <div>
+        <p class="title font-body-md text-body-md text-on-surface-variant">Behavioral</p>
+        <p class="status font-code-sm text-code-sm text-outline mt-1">Upcoming</p>
+    </div>
+</div>
+
+<!-- Step 4: Project -->
+<div id="step-project" class="relative z-10 flex gap-md items-start opacity-60">
+    <div class="icon-container w-6 h-6 rounded-full bg-surface border-2 border-outline-variant flex items-center justify-center mt-0.5"></div>
+    <div>
+        <p class="title font-body-md text-body-md text-on-surface-variant">Related to Project</p>
+        <p class="status font-code-sm text-code-sm text-outline mt-1">Upcoming</p>
+    </div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area: Question & Input -->
+<main class="flex-1 flex flex-col max-w-3xl w-full gap-lg">
+<!-- AI Status Indicator -->
+<div class="self-start inline-flex items-center gap-sm px-4 py-2 bg-secondary-container rounded-full shadow-sm border border-secondary-fixed">
+<span class="material-symbols-outlined text-secondary text-[18px] animate-pulse">graphic_eq</span>
+<span class="font-label-md text-label-md text-on-secondary-container" id="ai-status">Interviewer is listening...</span>
+</div>
+<!-- Question Card (Glassmorphism hint with low opacity bg) -->
+<div class="bg-surface/90 backdrop-blur-md border border-outline-variant rounded-xl p-xl shadow-sm relative overflow-hidden">
+<!-- Decorative subtle gradient top border -->
+<div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-fixed to-secondary-fixed"></div>
+<div class="flex items-start gap-md mb-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center flex-shrink-0 border border-surface-variant">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold leading-tight" id="question-title">
+                            Loading Interview...
+                        </h2>
+</div>
+</div>
+<div class="pl-[56px]">
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4" id="question-desc">
+                        Please wait while we connect to the AI engine.
+                    </p>
+</div>
+</div>
+<!-- Response Input Area -->
+<div class="bg-surface border border-outline-variant rounded-xl shadow-sm flex flex-col items-center justify-center p-xl transition-all relative overflow-hidden text-center min-h-[250px]">
+    <!-- Visual Voice Indicator (hidden by default) -->
+    <div id="voice-waves" class="hidden absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+        <div class="w-32 h-32 bg-primary rounded-full animate-ping"></div>
+        <div class="w-48 h-48 bg-primary rounded-full animate-ping" style="animation-delay: 0.2s; position: absolute;"></div>
+    </div>
+    
+    <div class="relative z-10 flex flex-col items-center gap-md">
+        <button id="btn-mic" class="w-20 h-20 flex items-center justify-center rounded-full bg-primary text-on-primary shadow-lg hover:opacity-90 transition-all active:scale-95">
+            <span class="material-symbols-outlined text-[36px]" id="mic-icon">mic</span>
+        </button>
+        <div id="mic-status" class="font-headline-sm text-headline-sm text-primary font-bold">
+            Tap to Speak
+        </div>
+        <p class="text-sm text-on-surface-variant max-w-md mx-auto" id="transcript-display">
+            Your answer will be transcribed here...
+        </p>
+    </div>
+    <input type="hidden" id="answer-input" value="">
+</div>
+<!-- Action Buttons Footer -->
+<div class="flex items-center justify-between mt-md pt-md">
+<button id="btn-skip" class="px-6 py-3 rounded-lg border border-outline-variant bg-surface text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors shadow-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">skip_next</span>
+                    Skip Question
+                </button>
+<button id="btn-submit" class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md shadow-md hover:opacity-90 transition-opacity flex items-center gap-sm disabled:opacity-50">
+                    Submit Answer
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</main>
+</div>
+<script src="js/auth.js"></script>
+<script>
+    Auth.requireAuth();
+    let interviewId = new URLSearchParams(window.location.search).get('id');
+    let jobId = new URLSearchParams(window.location.search).get('job_id');
+    let resumeId = new URLSearchParams(window.location.search).get('resume_id');
+    
+    const ui = {
+        questionTitle: document.getElementById('question-title'),
+        questionDesc: document.getElementById('question-desc'),
+        answerInput: document.getElementById('answer-input'),
+        btnSubmit: document.getElementById('btn-submit'),
+        btnSkip: document.getElementById('btn-skip'),
+        aiStatus: document.getElementById('ai-status'),
+        btnExit: document.getElementById('btn-exit'),
+        btnMic: document.getElementById('btn-mic'),
+        micIcon: document.getElementById('mic-icon'),
+        micStatus: document.getElementById('mic-status'),
+        transcriptDisplay: document.getElementById('transcript-display'),
+        voiceWaves: document.getElementById('voice-waves')
+    };
+
+    function setAIStatus(statusText, isSpinning = false) {
+        ui.aiStatus.innerHTML = statusText;
+        const icon = ui.aiStatus.previousElementSibling;
+        if (isSpinning) {
+            icon.innerText = "sync";
+            icon.classList.add("animate-spin");
+            icon.classList.remove("animate-pulse");
+        } else {
+            icon.innerText = "graphic_eq";
+            icon.classList.remove("animate-spin");
+            icon.classList.add("animate-pulse");
+        }
+    }
+
+    function updateStepper(status) {
+        const steps = [
+            { id: 'step-intro', matches: ['NOT_STARTED', 'INTRODUCTION'] },
+            { id: 'step-technical', matches: ['TECHNICAL', 'FOLLOW_UP'] },
+            { id: 'step-behavioral', matches: ['BEHAVIORAL'] },
+            { id: 'step-project', matches: ['FINALIZATION'] }
+        ];
+
+        let currentStepIndex = -1;
+        for (let i = 0; i < steps.length; i++) {
+            if (steps[i].matches.includes(status)) {
+                currentStepIndex = i;
+                break;
+            }
+        }
+        
+        if (status === 'COMPLETED') {
+            currentStepIndex = steps.length;
+        }
+
+        steps.forEach((step, index) => {
+            const el = document.getElementById(step.id);
+            if (!el) return;
+            
+            const iconContainer = el.querySelector('.icon-container');
+            const title = el.querySelector('.title');
+            const statusText = el.querySelector('.status');
+            
+            el.className = `relative z-10 flex gap-md items-start ${index > currentStepIndex ? 'opacity-60' : ''}`;
+            
+            if (index < currentStepIndex) {
+                // Completed
+                iconContainer.className = "icon-container w-6 h-6 rounded-full bg-primary flex items-center justify-center mt-0.5 shadow-sm";
+                iconContainer.innerHTML = `<span class="material-symbols-outlined text-[14px] text-on-primary">check</span>`;
+                title.className = "title font-body-md text-body-md text-on-surface font-semibold";
+                statusText.className = "status font-code-sm text-code-sm text-outline mt-1";
+                statusText.innerHTML = "Completed";
+            } else if (index === currentStepIndex) {
+                // Active
+                iconContainer.className = "icon-container w-6 h-6 rounded-full border-[3px] border-primary bg-surface flex items-center justify-center mt-0.5 shadow-sm relative";
+                iconContainer.innerHTML = `<div class="pulse-dot w-2 h-2 rounded-full bg-primary relative ai-pulse-dot"></div>`;
+                title.className = "title font-body-md text-body-md text-primary font-bold";
+                statusText.className = "status font-code-sm text-code-sm text-primary mt-1 flex items-center gap-1";
+                statusText.innerHTML = `<span class="material-symbols-outlined text-[12px] animate-spin">sync</span> In Progress`;
+            } else {
+                // Upcoming
+                iconContainer.className = "icon-container w-6 h-6 rounded-full bg-surface border-2 border-outline-variant flex items-center justify-center mt-0.5";
+                iconContainer.innerHTML = ``;
+                title.className = "title font-body-md text-body-md text-on-surface-variant";
+                statusText.className = "status font-code-sm text-code-sm text-outline mt-1";
+                statusText.innerHTML = "Upcoming";
+            }
+        });
+    }
+
+    function speakText(text) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        
+        // Strip markdown or HTML if present for clean reading
+        const cleanText = text.replace(/[*#_`]/g, '');
+        const utterance = new SpeechSynthesisUtterance(cleanText);
+        // Set rate to exactly 1.0 to prevent distortion or robotic artifacts
+        utterance.rate = 1.0; 
+        utterance.pitch = 1.0;
+        
+        const setVoiceAndSpeak = () => {
+            const voices = window.speechSynthesis.getVoices();
+            // 1. First, prioritize "Premium" or "Enhanced" high-fidelity voices
+            let preferred = voices.find(v => 
+                (v.lang.startsWith('en') && (v.name.includes('Premium') || v.name.includes('Enhanced') || v.name.includes('Siri')))
+            );
+            // 2. Fall back to known clear voices on Mac/Chrome
+            if (!preferred) {
+                preferred = voices.find(v => 
+                    v.name === 'Alex' || 
+                    v.name === 'Google UK English Female' ||
+                    v.name === 'Google US English'
+                );
+            }
+            // 3. Fall back to any english voice
+            if (!preferred) {
+                preferred = voices.find(v => v.lang === 'en-US' || v.lang === 'en-GB');
+            }
+            
+            if (preferred) {
+                utterance.voice = preferred;
+            }
+            window.speechSynthesis.speak(utterance);
+        };
+
+        if (window.speechSynthesis.getVoices().length === 0) {
+            window.speechSynthesis.addEventListener('voiceschanged', setVoiceAndSpeak, { once: true });
+        } else {
+            setVoiceAndSpeak();
+        }
+    }
+
+    async function initInterview() {
+        if (!interviewId) {
+            ui.questionTitle.innerText = "Creating Interview...";
+            ui.questionDesc.innerText = "Please wait while we set up your personalized interview session.";
+            setAIStatus("Setting up...", true);
+            ui.answerInput.disabled = true;
+            ui.btnSubmit.disabled = true;
+            
+            try {
+                const payload = {};
+                if (jobId) payload.job_id = jobId;
+                if (resumeId) payload.resume_id = resumeId;
+                
+                const res = await Auth.fetchAuth(`${API_BASE}/interviews`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!res.ok) {
+                    const err = await res.json();
+                    ui.questionTitle.innerText = "Error Creating Interview";
+                    ui.questionDesc.innerText = err.detail || "Failed to create interview. Have you uploaded a resume yet?";
+                    setAIStatus("Offline", false);
+                    return;
+                }
+                
+                const data = await res.json();
+                interviewId = data.interview_id;
+                window.history.replaceState({}, '', `?id=${interviewId}`);
+            } catch (e) {
+                console.error(e);
+                ui.questionTitle.innerText = "Connection error";
+                ui.questionDesc.innerText = "Failed to reach the server to create an interview.";
+                setAIStatus("Offline", false);
+                return;
+            }
+        }
+
+        try {
+            // Check state first
+            const res = await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}`);
+            if (!res.ok) {
+                ui.questionTitle.innerText = "Error";
+                ui.questionDesc.innerText = "Failed to load interview. It may not exist or you lack permission.";
+                setAIStatus("Offline", false);
+                return;
+            }
+            const data = await res.json();
+            
+            // Start the interview if not started
+            if (data.status === "NOT_STARTED") {
+                await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}/start`, {
+                    method: 'POST'
+                });
+            }
+            
+            // Load latest state
+            await loadState();
+            
+        } catch (e) {
+            console.error(e);
+            ui.questionDesc.innerText = "Connection error.";
+        }
+    }
+    
+    async function loadState() {
+        setAIStatus("Listening...", false);
+        const res = await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}`);
+        const state = await res.json();
+        
+        updateStepper(state.status);
+        
+        if (state.status === "COMPLETED") {
+            ui.questionTitle.innerText = "Interview Complete";
+            ui.questionDesc.innerText = "Thank you for completing the interview. Your results are being processed.";
+            ui.answerInput.disabled = true;
+            ui.btnSubmit.disabled = true;
+            ui.answerInput.placeholder = "Interview concluded.";
+            setAIStatus("Offline", false);
+            // Optionally redirect to report automatically
+            setTimeout(() => {
+                window.location.href = `reports.html?id=${interviewId}`;
+            }, 3000);
+            return;
+        }
+
+        // Find the last question from the AI
+        const history = state.conversation_history || [];
+        const aiMessages = history.filter(m => m.role === 'AI');
+        if (aiMessages.length > 0) {
+            const lastMsg = aiMessages[aiMessages.length - 1].content;
+            
+            const splitMatch = lastMsg.match(/^([^.?!]+[.?!]+)\s+(.*)$/s);
+            if (splitMatch) {
+                ui.questionTitle.innerText = splitMatch[1].trim();
+                ui.questionDesc.innerText = splitMatch[2].trim();
+            } else {
+                ui.questionTitle.innerText = "Question";
+                ui.questionDesc.innerText = lastMsg;
+            }
+            speakText(lastMsg);
+        } else {
+            ui.questionTitle.innerText = "Ready";
+            ui.questionDesc.innerText = "The AI is preparing your first question.";
+        }
+        ui.answerInput.value = "";
+        ui.transcriptDisplay.innerText = "Your answer will be transcribed here...";
+        ui.btnSubmit.disabled = false;
+    }
+    
+    async function submitAnswer() {
+        const text = ui.answerInput.value.trim();
+        if (!text) {
+            alert("Please provide an answer first by speaking.");
+            return;
+        }
+        
+        ui.btnSubmit.disabled = true;
+        if(isRecording) toggleRecording(); // Stop if accidentally left on
+        setAIStatus("Thinking...", true);
+        
+        try {
+            await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}/answer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answer_text: text })
+            });
+            
+            await loadState();
+        } catch (e) {
+            console.error(e);
+            alert("Failed to submit answer. Check console.");
+            ui.btnSubmit.disabled = false;
+            setAIStatus("Listening...", false);
+        }
+    }
+    
+    // High-Fidelity Audio Recording Logic
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    
+    // Live UI Speech Recognition (Visual only, actual backend processing uses MediaRecorder/Whisper)
+    let liveRecognition = null;
+    let cumulativeTranscript = '';
+    
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        liveRecognition = new SpeechRecognition();
+        liveRecognition.continuous = true;
+        liveRecognition.interimResults = true;
+        
+        liveRecognition.onresult = function(event) {
+            let interim = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    cumulativeTranscript += event.results[i][0].transcript + ' ';
+                } else {
+                    interim += event.results[i][0].transcript;
+                }
+            }
+            ui.transcriptDisplay.innerHTML = `<span class="text-on-surface">${cumulativeTranscript}</span><span class="text-outline italic">${interim}</span>`;
+        };
+        
+        liveRecognition.onend = function() {
+            // Keep restarting it if we are still actually recording
+            if (isRecording) {
+                try { liveRecognition.start(); } catch(e) {}
+            }
+        };
+    }
+
+    async function toggleRecording() {
+        if (isRecording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    }
+
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            cumulativeTranscript = ''; // Reset on new recording
+            
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+            
+            mediaRecorder.addEventListener("stop", async () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                stream.getTracks().forEach(track => track.stop()); // Release mic
+                
+                // Upload and transcribe
+                await transcribeAudio(audioBlob);
+            });
+            
+            mediaRecorder.start();
+            isRecording = true;
+            
+            ui.voiceWaves.classList.remove('hidden');
+            ui.btnMic.classList.add('bg-error');
+            ui.btnMic.classList.remove('bg-primary');
+            ui.micIcon.innerText = "stop";
+            ui.micStatus.innerText = "Listening...";
+            ui.micStatus.classList.add('text-error');
+            ui.micStatus.classList.remove('text-primary');
+            ui.transcriptDisplay.innerText = "Listening...";
+            
+            // Clear previous input if starting fresh
+            ui.answerInput.value = "";
+            
+            // Start visual live transcription
+            if (liveRecognition) {
+                try { liveRecognition.start(); } catch(e) {}
+            }
+        } catch (e) {
+            console.error("Microphone access denied or error:", e);
+            alert("Could not access microphone. Please allow microphone permissions.");
+        }
+    }
+
+    function stopRecording() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            
+            ui.voiceWaves.classList.add('hidden');
+            ui.btnMic.classList.remove('bg-error');
+            ui.btnMic.classList.add('bg-primary');
+            ui.micIcon.innerText = "mic";
+            ui.micStatus.innerText = "Transcribing...";
+            ui.micStatus.classList.remove('text-error');
+            ui.micStatus.classList.add('text-primary');
+            ui.transcriptDisplay.innerText = "Processing high-fidelity audio with Whisper AI...";
+            
+            if (liveRecognition) {
+                try { liveRecognition.stop(); } catch(e) {}
+            }
+        }
+    }
+    
+    async function transcribeAudio(audioBlob) {
+        setAIStatus("Transcribing...", true);
+        ui.btnMic.disabled = true;
+        ui.btnSubmit.disabled = true;
+        
+        const formData = new FormData();
+        formData.append("file", audioBlob, "answer.webm");
+        
+        try {
+            const res = await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}/transcribe`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                ui.answerInput.value = data.text;
+                ui.transcriptDisplay.innerHTML = `<span class="text-on-surface font-semibold">${data.text}</span>`;
+                ui.micStatus.innerText = "Tap to Speak Again";
+            } else {
+                const err = await res.json();
+                ui.transcriptDisplay.innerText = "Failed to transcribe: " + (err.detail || "Unknown error");
+            }
+        } catch (e) {
+            console.error(e);
+            ui.transcriptDisplay.innerText = "Connection error during transcription.";
+        } finally {
+            ui.btnMic.disabled = false;
+            ui.btnSubmit.disabled = false;
+            setAIStatus("Listening...", false);
+        }
+    }
+
+    // Timer Logic
+    let secondsRemaining = 30 * 60; // 30 minutes
+    let interviewTimerInterval = null;
+
+    function startTimer() {
+        if(interviewTimerInterval) return;
+        
+        const timerDisplay = document.getElementById('interview-timer');
+        const timerContainer = document.getElementById('timer-container');
+
+        interviewTimerInterval = setInterval(() => {
+            secondsRemaining--;
+            
+            const m = Math.floor(secondsRemaining / 60).toString().padStart(2, '0');
+            const s = (secondsRemaining % 60).toString().padStart(2, '0');
+            timerDisplay.innerText = `${m}:${s}`;
+            
+            // Warning at 5 minutes
+            if (secondsRemaining === 300) {
+                timerContainer.classList.remove('text-on-surface-variant', 'bg-surface-container-low');
+                timerContainer.classList.add('text-error', 'bg-error-container', 'border-error', 'animate-pulse');
+            }
+            
+            // Time up! Auto-complete interview
+            if (secondsRemaining <= 0) {
+                clearInterval(interviewTimerInterval);
+                timerDisplay.innerText = "00:00";
+                autoSubmitAndEnd();
+            }
+        }, 1000);
+    }
+
+    async function autoSubmitAndEnd() {
+        ui.answerInput.disabled = true;
+        ui.btnSubmit.disabled = true;
+        ui.answerInput.value = "";
+        ui.answerInput.placeholder = "Time is up! Submitting final response...";
+        setAIStatus("Finalizing...", true);
+        
+        ui.questionTitle.innerText = "Interview Concluded";
+        ui.questionDesc.innerText = "The strict 30-minute time limit has been reached. Redirecting to your report...";
+        
+        try {
+            await Auth.fetchAuth(`${API_BASE}/interviews/${interviewId}/finish`, {
+                method: 'POST'
+            });
+        } catch (e) {
+            console.error("Failed to finish interview automatically", e);
+        }
+        
+        setTimeout(() => {
+            window.location.href = `reports.html?id=${interviewId}`;
+        }, 3000);
+    }
+
+    // Call startTimer() when the session is successfully loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        initInterview().then(() => {
+            if (interviewId) startTimer();
+        });
+        ui.btnSubmit.addEventListener('click', submitAnswer);
+        
+        ui.btnSkip.addEventListener('click', () => {
+            ui.answerInput.value = "Skipped by candidate.";
+            submitAnswer();
+        });
+        
+        ui.btnMic.addEventListener('click', toggleRecording);
+        
+        document.getElementById('btn-exit').addEventListener('click', () => {
+            if(confirm('Are you sure you want to exit? Your progress will be saved but the interview may be marked incomplete.')) {
+                window.location.href = 'interviews.html';
+            }
+        });
+    });
+</script>
+</body></html>

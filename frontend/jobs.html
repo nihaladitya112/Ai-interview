@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jobs - InterviewAI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1b1b1d",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e4e2e4",
+                      "surface-container": "#f0edef",
+                      "on-error": "#ffffff",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-surface-variant": "#45464d",
+                      "surface-dim": "#dcd9db",
+                      "background": "#fcf8fa",
+                      "surface": "#fcf8fa",
+                      "primary-fixed": "#dae2fd",
+                      "on-tertiary-fixed-variant": "#574425",
+                      "secondary-fixed": "#d3e4fe",
+                      "on-secondary-container": "#54647a",
+                      "tertiary-fixed-dim": "#dec29a",
+                      "on-tertiary-container": "#98805d",
+                      "surface-tint": "#565e74",
+                      "inverse-surface": "#303032",
+                      "on-secondary-fixed-variant": "#38485d",
+                      "on-background": "#1b1b1d",
+                      "primary": "#000000",
+                      "tertiary-container": "#271901",
+                      "secondary-fixed-dim": "#b7c8e1",
+                      "tertiary-fixed": "#fcdeb5",
+                      "outline-variant": "#c6c6cd",
+                      "primary-fixed-dim": "#bec6e0",
+                      "secondary-container": "#d0e1fb",
+                      "secondary": "#505f76",
+                      "surface-container-low": "#f6f3f5",
+                      "inverse-primary": "#bec6e0",
+                      "on-tertiary-fixed": "#271901",
+                      "error-container": "#ffdad6",
+                      "on-primary-fixed": "#131b2e",
+                      "on-secondary-fixed": "#0b1c30",
+                      "inverse-on-surface": "#f3f0f2",
+                      "on-primary-container": "#7c839b",
+                      "primary-container": "#131b2e",
+                      "tertiary": "#000000",
+                      "outline": "#76777d",
+                      "surface-container-high": "#eae7e9",
+                      "surface-bright": "#fcf8fa",
+                      "on-secondary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#e4e2e4",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "max-width": "1440px",
+                      "gutter": "20px",
+                      "margin": "24px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "code-sm": [
+                              "jetbrainsMono"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-xl": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "code-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "18px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "36px",
+                              {
+                                      "lineHeight": "44px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+    <script src="js/notifications.js"></script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar (Shared Component) -->
+<nav class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-lowest border-r border-outline-variant shadow-sm flex flex-col p-margin gap-md z-50">
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-weight="fill">bubble_chart</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">InterviewAI</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Enterprise Modern</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-sm" id="sidebar-nav">
+<!-- Inactive Tab -->
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="code.html" data-nav="Candidates">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Candidates
+            </a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md p-sm bg-secondary-container text-on-secondary-container font-semibold rounded-lg opacity-80 scale-[0.99] transition-all duration-200" href="jobs.html" data-nav="Jobs">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+                Jobs
+            </a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="interviews.html" data-nav="Interviews">
+<span class="material-symbols-outlined" data-icon="video_camera_front">video_camera_front</span>
+                Interviews
+            </a>
+<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="#" data-nav="Reports">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+                Reports
+            </a>
+
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md" id="sidebar-footer">
+
+
+<div class="flex items-center gap-sm mt-2 p-sm rounded-lg bg-surface-container-lowest border border-outline-variant shadow-sm overflow-hidden">
+    <div id="sidebar-user-avatar" class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-sm shrink-0">U</div>
+    <div class="flex-1 overflow-hidden">
+        <p id="sidebar-user-name" class="font-semibold text-sm text-on-surface truncate">User Name</p>
+        <p id="sidebar-user-role" class="text-xs text-on-surface-variant truncate">user@example.com</p>
+    </div>
+</div>
+
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-[260px] h-screen overflow-hidden">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] z-40 bg-surface border-b border-outline-variant h-16 px-lg flex justify-end items-center transition-all duration-150 ease-in-out">
+
+<div class="flex items-center gap-md">
+<button id="btn-notifications" class="text-on-surface-variant hover:text-primary transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div id="btn-profile" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-sm cursor-pointer hover:border-primary transition-colors duration-150">
+<div class="w-full h-full bg-primary flex items-center justify-center text-on-primary font-bold text-sm">U</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto pt-[80px] p-xl bg-background">
+<div class="max-w-[1440px] mx-auto flex flex-col gap-xl">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+    <div>
+        <h2 class="font-headline-xl text-headline-xl text-on-surface mb-xs">Available Roles</h2>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Browse open positions and start your AI interview today.</p>
+    </div>
+</div>
+
+<!-- General Resume Interview Banner -->
+<div class="bg-primary-container border border-primary/20 rounded-xl p-6 flex items-center justify-between shadow-sm">
+    <div>
+        <h3 class="font-headline-md text-on-primary-container font-semibold mb-1">Don't see your role?</h3>
+        <p class="font-body-md text-on-primary-container/80">Take a personalized AI interview based entirely on your uploaded resume.</p>
+    </div>
+    <button onclick="openUploadModal(null)" class="bg-primary text-on-primary hover:bg-primary/90 px-6 py-3 rounded-lg font-label-lg transition-colors shadow-sm flex items-center gap-sm">
+        <span class="material-symbols-outlined">auto_awesome</span> Start Resume Interview
+    </button>
+</div>
+
+<!-- Main Content Grid: Jobs -->
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 bg-surface border border-surface-variant rounded-xl shadow-sm flex flex-col overflow-hidden">
+<div class="flex-1 overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+<tr>
+<th class="p-4 font-semibold border-b border-surface-variant">Job Title</th>
+<th class="p-4 font-semibold border-b border-surface-variant">Seniority</th>
+<th class="p-4 font-semibold border-b border-surface-variant">Experience</th>
+<th class="p-4 font-semibold border-b border-surface-variant">Required Skills</th>
+<th class="p-4 font-semibold border-b border-surface-variant">Date Added</th>
+<th class="p-4 font-semibold border-b border-surface-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody id="jobs-list" class="font-body-md text-body-md text-on-surface">
+    <!-- Populated by JS -->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+    <script src="js/auth.js"></script>
+    <script>
+    Auth.requireAuth();
+
+    let globalJobs = [];
+    
+    function renderJobs(jobs) {
+        const jobsList = document.getElementById('jobs-list');
+        jobsList.innerHTML = '';
+        
+        if (jobs.length === 0) {
+            jobsList.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-on-surface-variant">No available roles found.</td></tr>`;
+            return;
+        }
+
+        jobs.forEach(job => {
+            const date = new Date(job.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+            const skills = job.required_skills ? job.required_skills.slice(0, 3).join(', ') + (job.required_skills.length > 3 ? '...' : '') : 'N/A';
+            
+            jobsList.innerHTML += `
+<tr class="border-b border-surface-variant hover:bg-surface-container-lowest transition-colors duration-150">
+<td class="p-4">
+    <p class="font-semibold text-on-surface">${job.title}</p>
+    <p class="text-on-surface-variant text-xs">${job.company || 'InterviewAI'}</p>
+</td>
+<td class="p-4 text-on-surface-variant">
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-md text-[10px] bg-secondary-container text-on-secondary-container">
+        ${job.seniority || 'Any'}
+    </span>
+</td>
+<td class="p-4 text-on-surface-variant">${job.experience_years || 'Not specified'}</td>
+<td class="p-4 text-on-surface-variant text-xs max-w-[200px] truncate" title="${job.required_skills ? job.required_skills.join(', ') : 'N/A'}">${skills}</td>
+<td class="p-4 text-on-surface-variant">${date}</td>
+<td class="p-4 text-right">
+    <button onclick="openUploadModal('${job.id}')" class="bg-primary text-on-primary hover:bg-primary/90 px-4 py-2 rounded-lg font-label-md transition-colors shadow-sm flex items-center gap-sm inline-flex">
+        <span class="material-symbols-outlined text-sm">play_arrow</span> Start AI Interview
+    </button>
+</td>
+</tr>`;
+        });
+    }
+
+    async function loadJobs() {
+        try {
+            const res = await Auth.fetchAuth('http://localhost:8080/api/v1/jobs');
+            if(res.ok) {
+                const data = await res.json();
+                globalJobs = data;
+                renderJobs(globalJobs);
+            }
+        } catch (e) {
+            console.error('Error loading jobs:', e);
+        }
+    }
+    
+    function setupInteractivity() {
+
+        // Top nav buttons
+        document.getElementById('btn-profile').addEventListener('click', () => window.location.href = 'profile.html');
+
+        // Sidebar Navigation
+        document.querySelectorAll('#sidebar-nav a, #sidebar-footer a').forEach(el => {
+            el.addEventListener('click', (e) => {
+                const nav = e.currentTarget.getAttribute('data-nav');
+                if(nav === 'Reports') {
+                    e.preventDefault();
+                    window.location.href = 'reports.html';
+                } else if(nav === 'Settings') {
+                    e.preventDefault();
+                    window.location.href = 'profile.html';
+                }
+            });
+        });
+    }
+
+    function openUploadModal(jobId) {
+        window.location.href = `interviews.html?job_id=${jobId}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadJobs();
+        setupInteractivity();
+    });
+    </script>
+</body></html>
