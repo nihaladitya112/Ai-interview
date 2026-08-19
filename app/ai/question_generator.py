@@ -518,7 +518,7 @@ async def generate_questions(
     if api_key.startswith("gsk_"):
         # Use Groq API
         base_url = "https://api.groq.com/openai/v1"
-        model_name = "llama-3.1-70b-versatile"
+        model_name = "openai/gpt-oss-120b"
     elif settings.OPENAI_API_KEY:
         # Use OpenAI API
         base_url = None
@@ -541,6 +541,22 @@ async def generate_questions(
         active_cats = [c.value for c in (categories or list(QuestionCategory))]
         allowed_diffs = [d.value for d in (difficulties or list(QuestionDifficulty))]
         
+        # Build category quota distribution for the prompt
+        raw_quota = {}
+        remaining = count
+        total_cat = len(active_cats)
+        for i, cat in enumerate(active_cats):
+            if i == total_cat - 1:
+                raw_quota[cat] = remaining
+            else:
+                cat_enum = next((c for c in QuestionCategory if c.value == cat), QuestionCategory.TECHNICAL)
+                default_frac = DEFAULT_CATEGORY_COUNTS.get(cat_enum, 2) / sum(DEFAULT_CATEGORY_COUNTS.values())
+                allotted = max(1, round(count * default_frac))
+                raw_quota[cat] = allotted
+                remaining -= allotted
+                
+        quota_instructions = "\n".join([f"- {amt} questions with category \"{c}\"" for c, amt in raw_quota.items() if amt > 0])
+        
         system_prompt = f"""You are an expert Technical Interviewer.
 Your task is to generate {count} unique, non-repetitive interview questions for a candidate based on their resume.
 
@@ -550,6 +566,9 @@ DO NOT ask multiple questions about the same technology (e.g., Kubernetes) if th
 CRITICAL INSTRUCTION 2: The questions MUST be realistic for a short, live verbal interview (answerable in 1-2 minutes).
 DO NOT ask the candidate to build full applications or do project assignments (e.g., "Create a chatbot using Python", "Build a scraper"). 
 Instead, ask targeted technical questions (e.g., "How does a dictionary work under the hood?", "What is the difference between X and Y?", "How do you handle rate limiting in X?").
+
+CRITICAL INSTRUCTION 3: You MUST generate exactly the following distribution of categories:
+{quota_instructions}
 
 Focus entirely on the technologies and projects explicitly mentioned below.
 Return exactly {count} questions in a strict JSON array where each object has the following keys:

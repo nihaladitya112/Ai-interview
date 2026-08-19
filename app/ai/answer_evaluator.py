@@ -1,17 +1,18 @@
 """
 Answer Evaluator
 ================
-Mock implementation of answer evaluation. Scores answers on five dimensions
+Implementation of answer evaluation using LLMs. Scores answers on five dimensions
 and generates human-readable feedback.
-
-In production, this would call an LLM with a structured evaluation prompt.
 """
 from __future__ import annotations
 
-import hashlib
 import logging
+import json
 from dataclasses import dataclass, field
 from typing import List
+
+from openai import AsyncOpenAI
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -34,13 +35,10 @@ class EvaluationResult:
 def _mock_llm_evaluate(
     question_text: str, answer_text: str, skill_tag: str | None
 ) -> dict:
-    """
-    Simulates structured JSON output from an LLM on a 0-10 scale.
-    """
+    """Fallback if no LLM is configured."""
     import hashlib
     h = int(hashlib.md5((answer_text + question_text).encode()).hexdigest()[:8], 16)
     
-    # Generate some random-ish but deterministic scores between 4.0 and 9.5
     def _score(offset: int) -> float:
         return 4.0 + ((h + offset) % 55) / 10.0
 
@@ -68,7 +66,86 @@ def _mock_llm_evaluate(
     }
 
 
-def evaluate_answer(
+async def _llm_evaluate(
+    question_text: str, answer_text: str, skill_tag: str | None
+) -> dict:
+    """Evaluate using the configured LLM."""
+    api_key = settings.OPENAI_API_KEY or "ollama"
+    
+    if api_key.startswith("gsk_"):
+        base_url = "https://api.groq.com/openai/v1"
+        model_name = "openai/gpt-oss-120b"
+    elif settings.OPENAI_API_KEY:
+        base_url = None
+        model_name = "gpt-4o-mini"
+    else:
+        base_url = settings.OLLAMA_BASE_URL
+        model_name = settings.OLLAMA_MODEL
+        
+    if not settings.OPENAI_API_KEY and not settings.OLLAMA_BASE_URL:
+        return _mock_llm_evaluate(question_text, answer_text, skill_tag)
+        
+    client = AsyncOpenAI(api_key=api_key, base_url=base_url)
+    
+    system_prompt = f"""You are an expert technical interviewer evaluating a candidate's answer.
+Question: "{question_text}"
+Skill/Topic: {skill_tag or 'General'}
+
+Evaluate the following candidate's answer on a scale of 0.0 to 10.0 for the following metrics:
+- technical_correctness (is the technical info accurate?)
+- relevance (does it answer the question directly?)
+- depth (does it go beyond surface level?)
+- reasoning (is the logic sound?)
+- clarity (is the communication clear?)
+- completeness (are all parts of the question addressed?)
+
+Also provide:
+- feedback: a short, constructive paragraph for the candidate
+- missing_concepts: list of up to 3 technical concepts they failed to mention
+- strengths: list of up to 2 things they did well
+- weaknesses: list of up to 2 areas for improvement
+
+Return EXACTLY a JSON object with the following keys: "technical_correctness", "relevance", "depth", "reasoning", "clarity", "completeness", "feedback", "missing_concepts", "strengths", "weaknesses"
+Do not include any other text outside the JSON.
+"""
+
+    try:
+        response = await client.chat.completions.create(
+            model=model_name,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Candidate Answer: \"{answer_text}\"\nEvaluate the answer."}
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.3
+        )
+        content = response.choices[0].message.content.strip()
+        data = json.loads(content)
+        
+        # Calculate overall score
+        tech = float(data.get("technical_correctness", 0.0))
+        rel = float(data.get("relevance", 0.0))
+        dep = float(data.get("depth", 0.0))
+        res = float(data.get("reasoning", 0.0))
+        clr = float(data.get("clarity", 0.0))
+        comp = float(data.get("completeness", 0.0))
+        
+        overall = round((tech*0.25 + rel*0.20 + dep*0.15 + res*0.15 + clr*0.10 + comp*0.15), 1)
+        data["overall_score"] = overall
+        
+        # Ensure array fields exist
+        data["missing_concepts"] = data.get("missing_concepts") or []
+        data["strengths"] = data.get("strengths") or []
+        data["weaknesses"] = data.get("weaknesses") or []
+        data["feedback"] = data.get("feedback") or "No detailed feedback provided."
+        
+        return data
+    except Exception as e:
+        logger.error(f"LLM evaluation failed: {e}. Falling back to mock evaluator.")
+        return _mock_llm_evaluate(question_text, answer_text, skill_tag)
+
+
+async def evaluate_answer(
     question_text: str,
     answer_text: str,
     skill_tag: str | None = None,
@@ -76,27 +153,44 @@ def evaluate_answer(
     rag_context: str | None = None,
 ) -> EvaluationResult:
     """
-    Evaluate an answer using a mock LLM returning structured JSON,
+    Evaluate an answer using an LLM returning structured JSON,
     then apply deterministic rules to adjust the scores.
     """
+    # 0. Check for empty or skipped answers
+    word_count = len(answer_text.strip().split())
+    answer_clean = answer_text.strip().lower().replace(".", "").replace(",", "")
+    skip_phrases = ["skip", "i don't know", "i dont know", "pass", "next", "skipped by candidate"]
+    
+    if word_count < 3 or answer_clean in skip_phrases:
+        return EvaluationResult(
+            technical_correctness=0.0,
+            relevance=0.0,
+            depth=0.0,
+            reasoning=0.0,
+            clarity=0.0,
+            completeness=0.0,
+            overall_score=0.0,
+            feedback="The question was skipped or the answer was too short to evaluate.",
+            weaknesses=["Did not attempt to answer the question."]
+        )
+
     # 1. Get LLM structured output
-    llm_output = _mock_llm_evaluate(question_text, answer_text, skill_tag)
+    llm_output = await _llm_evaluate(question_text, answer_text, skill_tag)
     
     # Extract raw scores
-    tech = llm_output["technical_correctness"]
-    rel = llm_output["relevance"]
-    dep = llm_output["depth"]
-    res = llm_output["reasoning"]
-    clr = llm_output["clarity"]
-    comp = llm_output["completeness"]
+    tech = float(llm_output.get("technical_correctness", 0.0))
+    rel = float(llm_output.get("relevance", 0.0))
+    dep = float(llm_output.get("depth", 0.0))
+    res = float(llm_output.get("reasoning", 0.0))
+    clr = float(llm_output.get("clarity", 0.0))
+    comp = float(llm_output.get("completeness", 0.0))
     
-    feedback = llm_output["feedback"]
-    strengths = llm_output["strengths"]
-    weaknesses = llm_output["weaknesses"]
-    missing = llm_output["missing_concepts"]
+    feedback = str(llm_output.get("feedback", ""))
+    strengths = list(llm_output.get("strengths", []))
+    weaknesses = list(llm_output.get("weaknesses", []))
+    missing = list(llm_output.get("missing_concepts", []))
 
-    # 2. Deterministic Rule Overrides (Do not blindly trust the LLM)
-    word_count = len(answer_text.split())
+    # 2. Deterministic Rule Overrides
     
     # Rule A: Extreme length penalty
     if word_count < 10:
@@ -123,10 +217,8 @@ def evaluate_answer(
     # Rule C: RAG Context Verification
     if rag_context:
         rag_lower = set(rag_context.lower().split()) - stopwords
-        # Check if the candidate's core answer words appear in the truth context
         ans_core = answer_lower - stopwords
         if ans_core and len(ans_core & rag_lower) / len(ans_core) < 0.15:
-            # Answer deviates heavily from the ground truth RAG context
             tech = min(tech, 3.5)
             comp = min(comp, 4.0)
             weaknesses.append("Answer contradicts or misses the core technical knowledge base.")
@@ -134,12 +226,14 @@ def evaluate_answer(
     # Rule D: Sanity check overall score
     overall = round((tech*0.25 + rel*0.20 + dep*0.15 + res*0.15 + clr*0.10 + comp*0.15), 1)
 
-    if overall >= 8.5:
-        feedback = "Excellent, highly detailed answer."
-    elif overall >= 6.0:
-        feedback = "Good answer, but could be improved."
-    else:
-        feedback = "The answer needs more development and clarity."
+    # Adjust feedback if it wasn't provided well
+    if not feedback or feedback == "No detailed feedback provided.":
+        if overall >= 8.5:
+            feedback = "Excellent, highly detailed answer."
+        elif overall >= 6.0:
+            feedback = "Good answer, but could be improved."
+        else:
+            feedback = "The answer needs more development and clarity."
 
     return EvaluationResult(
         technical_correctness=tech,

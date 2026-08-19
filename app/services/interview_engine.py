@@ -275,7 +275,7 @@ async def submit_answer(
             rag_context = "\n".join([c.content for c in chunks])
 
     # ── Evaluate ──
-    eval_result: EvaluationResult = evaluate_answer(
+    eval_result: EvaluationResult = await evaluate_answer(
         question_text=question.question_text,
         answer_text=answer_text,
         skill_tag=question.skill_tag,

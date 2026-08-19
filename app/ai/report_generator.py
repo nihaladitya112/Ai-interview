@@ -120,7 +120,7 @@ async def generate_interview_report(interview_id: uuid.UUID, db: AsyncSession) -
     api_key = settings.OPENAI_API_KEY
     if api_key and api_key.startswith("gsk_"):
         base_url = "https://api.groq.com/openai/v1"
-        model_name = "llama-3.1-70b-versatile"
+        model_name = "openai/gpt-oss-120b"
     elif api_key:
         base_url = None
         model_name = "gpt-4o-mini"

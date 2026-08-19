@@ -199,7 +199,7 @@ async def extract_candidate_profile(raw_text: str) -> dict:
 
     if api_key.startswith("gsk_"):
         base_url = "https://api.groq.com/openai/v1"
-        model_name = "llama-3.1-70b-versatile"
+        model_name = "openai/gpt-oss-120b"
     elif settings.OPENAI_API_KEY:
         base_url = None
         model_name = "gpt-4o-mini"
