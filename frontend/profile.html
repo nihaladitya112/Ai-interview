@@ -139,10 +139,7 @@
                 <span class="material-symbols-outlined" data-icon="group">group</span>
                 Candidates
             </a>
-            <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="jobs.html" data-nav="Jobs">
-                <span class="material-symbols-outlined" data-icon="work">work</span>
-                Jobs
-            </a>
+            
             <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="interviews.html" data-nav="Interviews">
                 <span class="material-symbols-outlined" data-icon="video_camera_front">video_camera_front</span>
                 Interviews
@@ -410,7 +407,7 @@
 
         async function loadProfile() {
             try {
-                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me');
+                const res = await Auth.fetchAuth('/api/v1/users/me');
                 if (res.ok) {
                     const data = await res.json();
                     const fullName = `${data.first_name || ''} ${data.last_name || ''}`.trim() || 'Candidate User';
@@ -441,7 +438,7 @@
 
         async function loadStats() {
             try {
-                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/stats');
+                const res = await Auth.fetchAuth('/api/v1/users/me/stats');
                 if (res.ok) {
                     const data = await res.json();
                     document.getElementById('stat-total').textContent = data.total_interviews || '0';
@@ -456,7 +453,7 @@
 
         async function loadInterviews() {
             try {
-                const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/interviews');
+                const res = await Auth.fetchAuth('/api/v1/users/me/interviews');
                 const tbody = document.getElementById('interviews-list');
                 
                 if (res.ok) {
@@ -544,7 +541,7 @@
                 };
 
                 try {
-                    const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me', {
+                    const res = await Auth.fetchAuth('/api/v1/users/me', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -580,7 +577,7 @@
                 loader.classList.remove('hidden');
                 
                 try {
-                    const res = await Auth.fetchAuth('http://localhost:8080/api/v1/users/me/password', {
+                    const res = await Auth.fetchAuth('/api/v1/users/me/password', {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

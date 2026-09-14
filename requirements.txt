@@ -21,3 +21,5 @@ openai
 sentence-transformers
 scikit-learn
 numpy
+pytest
+pytest-asyncio

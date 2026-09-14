@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     REDIS_URL: str = "redis://localhost:6379/0"
     OPENAI_API_KEY: Optional[str] = None
-    OLLAMA_BASE_URL: str = "http://host.docker.internal:11434/v1"
+    OLLAMA_BASE_URL: str = "http://localhost:11434/v1"
     OLLAMA_MODEL: str = "llama3.2:1b"
 
     model_config = SettingsConfigDict(

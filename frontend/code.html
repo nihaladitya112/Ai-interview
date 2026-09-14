@@ -185,10 +185,7 @@
                 Candidates
             </a>
 <!-- Inactive Tabs -->
-<a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="jobs.html" data-nav="Jobs">
-<span class="material-symbols-outlined" data-icon="work">work</span>
-                Jobs
-            </a>
+
 <a class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200 rounded-lg" href="interviews.html" data-nav="Interviews">
 <span class="material-symbols-outlined" data-icon="video_camera_front">video_camera_front</span>
                 Interviews
@@ -240,7 +237,7 @@
 <div class="col-span-4 bg-surface border border-surface-variant rounded-xl p-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col justify-between">
 <div class="flex justify-between items-start mb-lg">
 <span class="material-symbols-outlined text-on-surface-variant bg-surface-container p-2 rounded-lg">history</span>
-<span class="font-label-md text-label-md text-primary bg-primary-container px-2 py-1 rounded">3 Completed</span>
+<span class="font-label-md text-label-md text-white bg-blue-600 px-2 py-1 rounded">3 Completed</span>
 </div>
 <div>
 <p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Total Interviews</p>
@@ -368,7 +365,7 @@
 
     async function loadDashboard() {
         try {
-            const res = await Auth.fetchAuth('http://localhost:8080/api/v1/dashboard/candidate_summary');
+            const res = await Auth.fetchAuth('/api/v1/dashboard/candidate_summary');
             if (res.ok) {
                 const data = await res.json();
                 

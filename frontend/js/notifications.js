@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadNotifications() {
         try {
-            const res = await Auth.fetchAuth('http://localhost:8080/api/v1/notifications');
+            const res = await Auth.fetchAuth('/api/v1/notifications');
             if (res.ok) {
                 const data = await res.json();
                 renderNotifications(data.notifications);
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function markAsRead(id) {
         try {
-            const res = await Auth.fetchAuth(`http://localhost:8080/api/v1/notifications/${id}/read`, { method: 'POST' });
+            const res = await Auth.fetchAuth(`/api/v1/notifications/${id}/read`, { method: 'POST' });
             if (res.ok) {
                 loadNotifications();
             }
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function markAllAsRead() {
         try {
-            const res = await Auth.fetchAuth(`http://localhost:8080/api/v1/notifications/read-all`, { method: 'POST' });
+            const res = await Auth.fetchAuth(`/api/v1/notifications/read-all`, { method: 'POST' });
             if (res.ok) {
                 loadNotifications();
             }
